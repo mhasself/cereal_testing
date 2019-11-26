@@ -23,3 +23,12 @@ add_library(certest SHARED
 
 add_executable(run_test src/main.cxx)
 target_link_libraries(run_test certest)
+
+# This version is linked directly together without going through a
+# shared lib!
+add_executable(run_test1
+    src/main.cxx
+    src/file0.cxx
+    src/file1.cxx
+    src/file2.cxx
+)
