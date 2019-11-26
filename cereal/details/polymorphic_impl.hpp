@@ -767,7 +767,9 @@ namespace cereal
       {
         static_assert( std::is_polymorphic<T>::value,
                        "Attempting to register non polymorphic type" );
+	std::cout << "binding...\n";
         bind( std::is_abstract<T>() );
+	
         return *this;
       }
     };

@@ -155,7 +155,11 @@
 #define CEREAL_REGISTER_DYNAMIC_INIT(LibName)                \
   namespace cereal {                                         \
   namespace detail {                                         \
-    void CEREAL_DLL_EXPORT dynamic_init_dummy_##LibName() {} \
+    void CEREAL_DLL_EXPORT dynamic_init_dummy_##LibName() { \
+      std::cout << "dynamic_init_dummy_ " << #LibName << std::endl; \
+      auto const & bindingMap = detail::StaticObject<detail::InputBindingMap<XMLOutputArchive>>::getInstance().map; \
+      std::cout << "map contents: " << bindingMap.size() << "\n"; \
+ }	\
   } } /* end namespaces */
 
 //! Forces dynamic initialization of polymorphic support in a
@@ -183,6 +187,9 @@ namespace cereal
 {
   namespace polymorphic_detail
   {
+    #define DEBUG_MAPPING \
+      std::cout << "debug: size=" << bindingMap.size() << "\n";
+
     //! Error message used for unregistered polymorphic types
     /*! @internal */
     #define UNREGISTERED_POLYMORPHIC_EXCEPTION(LoadSave, Name)                                                                                      \
@@ -220,6 +227,7 @@ namespace cereal
       auto const & bindingMap = detail::StaticObject<detail::InputBindingMap<Archive>>::getInstance().map;
 
       auto binding = bindingMap.find(name);
+  DEBUG_MAPPING
       if(binding == bindingMap.end())
         UNREGISTERED_POLYMORPHIC_EXCEPTION(load, name)
       return binding->second;
@@ -323,6 +331,7 @@ namespace cereal
     auto const & bindingMap = detail::StaticObject<detail::OutputBindingMap<Archive>>::getInstance().map;
 
     auto binding = bindingMap.find(std::type_index(ptrinfo));
+  DEBUG_MAPPING
     if(binding == bindingMap.end())
       UNREGISTERED_POLYMORPHIC_EXCEPTION(save, cereal::util::demangle(ptrinfo.name()))
 
@@ -358,6 +367,7 @@ namespace cereal
     auto const & bindingMap = detail::StaticObject<detail::OutputBindingMap<Archive>>::getInstance().map;
 
     auto binding = bindingMap.find(std::type_index(ptrinfo));
+  DEBUG_MAPPING
     if(binding == bindingMap.end())
       UNREGISTERED_POLYMORPHIC_EXCEPTION(save, cereal::util::demangle(ptrinfo.name()))
 
@@ -422,6 +432,7 @@ namespace cereal
     auto const & bindingMap = detail::StaticObject<detail::OutputBindingMap<Archive>>::getInstance().map;
 
     auto binding = bindingMap.find(std::type_index(ptrinfo));
+  DEBUG_MAPPING
     if(binding == bindingMap.end())
       UNREGISTERED_POLYMORPHIC_EXCEPTION(save, cereal::util::demangle(ptrinfo.name()))
 
@@ -457,6 +468,7 @@ namespace cereal
     auto const & bindingMap = detail::StaticObject<detail::OutputBindingMap<Archive>>::getInstance().map;
 
     auto binding = bindingMap.find(std::type_index(ptrinfo));
+  DEBUG_MAPPING
     if(binding == bindingMap.end())
       UNREGISTERED_POLYMORPHIC_EXCEPTION(save, cereal::util::demangle(ptrinfo.name()))
 
