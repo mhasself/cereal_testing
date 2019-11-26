@@ -30,3 +30,6 @@ class ArchiveWriter {
  private:
   std::vector<BasePtr> stuff;
 };
+
+CEREAL_FORCE_DYNAMIC_INIT(file1);
+CEREAL_FORCE_DYNAMIC_INIT(file2);

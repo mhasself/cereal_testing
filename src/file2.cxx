@@ -15,6 +15,8 @@ template void MyClass2::serialize(cereal::XMLInputArchive &, unsigned);
 template void MyClass2::serialize(cereal::PortableBinaryOutputArchive &, unsigned);
 template void MyClass2::serialize(cereal::PortableBinaryInputArchive &, unsigned);
 
+CEREAL_REGISTER_DYNAMIC_INIT(file2);
+
 void main2() {
   std::cout << "main2\n";
 }
