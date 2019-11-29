@@ -27,7 +27,8 @@ Or build and run using icc::
   ./run_test2
 
 
-The expected output is ``out.xml``, with this in it::
+The gcc form should produce no output to terminal, but will create
+file ``out.xml`` with the following contents::
 
   <?xml version="1.0" encoding="utf-8"?>
   <cereal>
@@ -48,3 +49,11 @@ The expected output is ``out.xml``, with this in it::
         </value0>
   </cereal>
 
+
+In contrast the icpc executable will exit with error and the text::
+
+  terminate called after throwing an instance of 'cereal::Exception'
+    what():  Trying to save an unregistered polymorphic type (MyClass1).
+  Make sure your type is registered with CEREAL_REGISTER_TYPE and that the archive you are using was included (and registered with CEREAL_REGISTER_ARCHIVE) prior to calling CEREAL_REGISTER_TYPE.
+  If your type is already registered and you still see this error, you may need to use CEREAL_REGISTER_DYNAMIC_INIT.
+  Aborted
