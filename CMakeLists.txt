@@ -17,8 +17,8 @@ include_directories(.)
 
 add_library(certest SHARED
     src/file0.cxx
-    src/file1.cxx
-    src/file2.cxx
+#    src/file1.cxx
+#    src/file2.cxx
 )
 
 add_executable(run_test src/main.cxx)
@@ -29,6 +29,6 @@ target_link_libraries(run_test certest)
 add_executable(run_test1
     src/main.cxx
     src/file0.cxx
-    src/file1.cxx
-    src/file2.cxx
+#    src/file1.cxx
+#    src/file2.cxx
 )

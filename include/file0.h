@@ -4,9 +4,8 @@
 #include <boost/make_shared.hpp>
 
 #include <cereal/cereal.hpp>
-#include <cereal/types/polymorphic.hpp>
-#include <cereal/archives/portable_binary.hpp>
 #include <cereal/archives/xml.hpp>
+#include <cereal/types/polymorphic.hpp>
 #include <fstream>
 
 class MyClass0 {
@@ -16,11 +15,6 @@ class MyClass0 {
   virtual void sayType() = 0;
 };
 
-//class ArchiveWrapper {
-//public:
-//  void write(MyClass1 &x, MyClass2 &y);
-//  std::pair<MyClass1,MyClass2> read();
-//};
 typedef boost::shared_ptr<MyClass0> BasePtr;
 
 class ArchiveWriter {
@@ -31,5 +25,31 @@ class ArchiveWriter {
   std::vector<BasePtr> stuff;
 };
 
-CEREAL_FORCE_DYNAMIC_INIT(file1);
-CEREAL_FORCE_DYNAMIC_INIT(file2);
+class MyClass1 : public MyClass0 {
+ public:
+  int x;
+  template <class A> void serialize(A &ar, const unsigned v);
+  MyClass1() : MyClass0(), x(0) {};
+  MyClass1(int x_) : MyClass0(), x(x_) {};
+  void sayType() {
+    std::cout << "MyClass1\n";
+  }
+};
+
+class MyClass2 : public MyClass0 {
+ public:
+  int y;
+  template <class A> void serialize(A &ar, const unsigned v);
+  MyClass2() : MyClass0(), y(3) {};
+  MyClass2(int y_) : MyClass0(), y(y_) {};
+  void sayType() {
+    std::cout << "MyClass2\n";
+  }
+};
+
+// Without this register, cereal complains at run time.
+CEREAL_REGISTER_TYPE(MyClass1);
+CEREAL_REGISTER_TYPE(MyClass2);
+
+CEREAL_FORCE_DYNAMIC_INIT(file0);
+
